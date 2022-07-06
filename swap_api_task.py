@@ -21,7 +21,7 @@ def destroy_collection(collection_name: str, database_name: str):   # Deletes a 
     try:
         exec(f"db.{collection_name}.drop()")  # Attempt to delete the specified collection within the specified database
     except:
-        return print("Database could not be destroyed")
+        return print(f"Collection: '{collection_name}' could not be destroyed")
 
 def gather_from_api(url: str):  # Takes an API Endpoint URL and returns a collection of the results as a list of dictionaries/JSON files
     results = requests.request('GET', url).json()['results']    # HTTP GET Request to supplied URL. HTTP Response parsed to JSON and stored as 'results'
