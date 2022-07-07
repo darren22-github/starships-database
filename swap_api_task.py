@@ -15,6 +15,7 @@ import requests  # Requests library for HTTP requests to APIs
 import pymongo  # Pymongo library for accessing NoSQL/MongoDB database(s)
 
 # --- DEFINING FUNCTIONS  ---
+# EXTRACT
 def destroy_collection(collection_name: str, database_name: str):   # Deletes a collection from a MongoDB database. Useful for testing insertions and collection creation functions
     client = pymongo.MongoClient()  # Initialise Pymongo client
     db = client[database_name]  # Connect to database with the supplied name
@@ -38,6 +39,7 @@ def collect_ships_from_swapi(): # Uses collect_from_api() to iterate through sta
         url = f'https://swapi.dev/api/starships/?page={i}'  # Update the URL to point to the next page ('page= {page number} +1')
     return results
 
+# TRANSFORM
 def insert_pilots(ship_collection: list, database_name: str):   # Inserts a character ObjectID from the character_collection into a ships 'pilots' array where pilot name matches a character name, replacing the pilots URL
     client = pymongo.MongoClient()  # Initialise Pymongo client
     db = client[database_name]  # Connect to database with the supplied name
@@ -48,6 +50,7 @@ def insert_pilots(ship_collection: list, database_name: str):   # Inserts a char
                 pilot_id = db.characters.find_one({'name': pilot_details['name']}, {'_id': 1})  # Find the ObjectID of the character in the 'characters' table with a matching name to the current pilot
                 ship['pilots'][ship['pilots'].index(pilot_url)] = pilot_id['_id']   # Replace the pilot URL in 'pilots' array with their character ObjectID from 'characters'
 
+# LOAD
 def insert_into_collection(doc, collection_name: str, database_name: str):
     client = pymongo.MongoClient()  # Initialise Pymongo client
     db = client[database_name]  # Connect to database with the supplied name
